@@ -25,6 +25,10 @@ static void Android_JNI_RtmpClose(JNIEnv *jniEnv, jobject jobject1) {
     PushProxy::getInstance()->stop();
 
 }
+static void Android_JNI_RtmpRelease(JNIEnv *jniEnv, jobject jobject1) {
+    PushProxy::getInstance()->release();
+
+}
 
 static void Android_JNI_pushAudio(JNIEnv *jniEnv, jobject jobject1, jbyteArray audio, jint size,jint type) {
 
@@ -57,6 +61,7 @@ Android_JNI_pushSpsPps(JNIEnv *jniEnv, jobject jobject1, jbyteArray sps, jint sp
 static JNINativeMethod mNativeMethod[] = {
         {"NativeRtmpConnect", "(Ljava/lang/String;)V", (void *) Android_JNI_RtmpConnect},
         {"NativeRtmpClose",   "()V",                   (void *) Android_JNI_RtmpClose},
+        {"NativeRtmpRelease",   "()V",                   (void *) Android_JNI_RtmpRelease},
         {"pushAudio",         "([BII)V",                (void *) Android_JNI_pushAudio},
         {"pushVideo",         "([BII)V",               (void *) Android_JNI_pushVideo},
         {"pushSpsPps",        "([BI[BI)V",             (void *) Android_JNI_pushSpsPps},

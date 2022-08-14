@@ -44,8 +44,10 @@ public:
      * 停止推流
      */
      void stop() ;
-
-
+    /**
+     * 关闭
+     */
+    void release() ;
 
     /**
      * 推送视频第一帧 SPS PPS 数据

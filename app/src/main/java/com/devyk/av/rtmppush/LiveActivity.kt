@@ -5,12 +5,10 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.devyk.av.rtmp.library.callback.OnConnectListener
@@ -24,8 +22,9 @@ import com.devyk.av.rtmp.library.stream.sender.rtmp.RtmpSender
 import com.devyk.av.rtmp.library.utils.LogHelper
 import com.devyk.ikavedit.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_live.*
+import java.lang.Exception
 
-class LiveActivity : BaseActivity<Int>(), OnConnectListener {
+class LiveActivity : BaseActivity<Int>(), OnConnectListener, CompoundButton.OnCheckedChangeListener {
     /**
      * OpenGL 物体坐标，对应 Android 屏幕坐标
      *
@@ -55,7 +54,8 @@ class LiveActivity : BaseActivity<Int>(), OnConnectListener {
     )
 
 
-    private var mDataSource = "rtmp://www.devyk.cn:1992/devykLive/live1"
+//    private var mDataSource = "rtmp://www.devyk.cn:1992/devykLive/live1"
+    private var mDataSource = "rtmp://live-push.bilivideo.com/live-bvc/" + "?streamname=live_574012814_82567615&key=8a91f1087409d56f62e972b698d2a9d0&schedule=rtmp&pflag=1"
     private var isConncet = false
     private lateinit var mSender: RtmpSender
     private lateinit var mPacker: RtmpPacker
@@ -110,13 +110,28 @@ class LiveActivity : BaseActivity<Int>(), OnConnectListener {
         mSender.setDataSource(mDataSource)
 
         initRtmpAddressDialog()
-
+        btn_live.setOnCheckedChangeListener(this)
+    }
+    override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
+        when (buttonView.id) {
+            R.id.btn_live//start or stop living
+            -> if (isChecked) {
+                Log.e("LiveActivity", "mDataSource = " + mDataSource)
+                //设置 rtmp 地址
+                mSender.setDataSource(mDataSource)
+                //开始连接
+                mSender.connect()
+            } else {
+                Log.e("LiveActivity", "mSender.close")
+                mSender.close()
+            }
+        }
     }
 
     override fun onContentViewBefore() {
         super.onContentViewBefore()
         Utils.init(application)
-        checkPermission()
+//        checkPermission()
         setNotTitleBar()
     }
 
@@ -151,12 +166,14 @@ class LiveActivity : BaseActivity<Int>(), OnConnectListener {
     override fun onDestroy() {
         super.onDestroy()
         mSender?.close()
+        mSender?.release()
         live.stopLive()
         live.releaseCamera()
     }
 
 
     override fun onFail(message: String) {
+        isConncet = false
         runOnUiThread {
             Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
             progressBar.visibility = View.GONE;
@@ -183,6 +200,8 @@ class LiveActivity : BaseActivity<Int>(), OnConnectListener {
     }
 
     override fun onClose() {
+        mPacker.stop()
+        live.stopLive()
         runOnUiThread {
             progressBar.visibility = View.GONE
             live_icon.setImageDrawable(getDrawable(R.mipmap.live))
@@ -201,7 +220,8 @@ class LiveActivity : BaseActivity<Int>(), OnConnectListener {
         uploadBuilder.setView(playView)
         uploadDialog = uploadBuilder.create()
         okBtn.setOnClickListener {
-            val uploadUrl = address.getText().toString()
+//            val uploadUrl = address.getText().toString()
+            val uploadUrl = mDataSource
             if (TextUtils.isEmpty(uploadUrl)) {
                 Toast.makeText(applicationContext, "Upload address is empty!", Toast.LENGTH_SHORT).show()
             } else {

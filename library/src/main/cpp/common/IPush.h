@@ -20,6 +20,8 @@ public:
      * 停止推流
      */
     virtual void stop() = 0;
+    virtual int isPush() = 0;
+    virtual void relase() = 0;
 
     /**
      * 子线程入口

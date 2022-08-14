@@ -27,13 +27,23 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:gravity="center"
-            android:layout_width="80dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="80dp">
         <ImageView
                 android:id="@+id/live_icon"
                 android:src="@mipmap/live"
                 android:layout_width="60dp"
                 android:layout_height="60dp"/>
+        <ToggleButton
+                android:id="@+id/btn_live"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textOn="stop"
+                android:textOff="start"
+                android:layout_centerVertical="true"/>
 
     </LinearLayout>
 

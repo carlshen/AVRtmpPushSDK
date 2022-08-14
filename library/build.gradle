@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 //apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.novoda.bintray-release'//添加 bintray-release 配置
+//apply plugin: 'com.novoda.bintray-release'//添加 bintray-release 配置
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]

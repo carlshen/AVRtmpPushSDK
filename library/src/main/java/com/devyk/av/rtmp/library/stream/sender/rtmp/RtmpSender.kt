@@ -53,6 +53,9 @@ public class RtmpSender : Sender {
         NativeRtmpClose()
         onClose()
     }
+    fun release() {
+        NativeRtmpRelease()
+    }
 
     fun setOnConnectListener(lis: OnConnectListener) {
         listener = lis
@@ -108,6 +111,7 @@ public class RtmpSender : Sender {
 
     private external fun NativeRtmpConnect(url: String?);
     private external fun NativeRtmpClose();
+    private external fun NativeRtmpRelease();
     private external fun pushAudio(data: ByteArray, size: Int, type: Int)
     private external fun pushVideo(data: ByteArray, size: Int, isKeyFrame: Int)
     private external fun pushSpsPps(sps: ByteArray, size: Int, pps: ByteArray, size1: Int)

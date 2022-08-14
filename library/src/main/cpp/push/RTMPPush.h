@@ -86,7 +86,8 @@ public:
 
     void onConnecting();
 
-    void relase();
+    virtual int isPush();
+    virtual void relase();
 };
 
 

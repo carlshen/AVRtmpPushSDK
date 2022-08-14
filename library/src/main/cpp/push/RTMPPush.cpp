@@ -25,6 +25,9 @@ void RTMPPush::start() {
     IThread::start();
 }
 
+int RTMPPush::isPush() {
+    return isPusher;
+}
 void RTMPPush::stop() {
     isPusher = false;
     int v = 1000;
